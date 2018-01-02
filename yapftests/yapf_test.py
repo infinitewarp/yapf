@@ -832,6 +832,26 @@ class CommandLineTest(unittest.TestCase):
         expected_formatted_code,
         extra_options=['--lines', '1-1'])
 
+  def testRetainingUglyIndentsWhenSpecifyingLines(self):
+    unformatted_code = textwrap.dedent("""\
+        a = line_to_format
+        def f():
+           x = y + 42; z = n * 42
+           if True: a += 1 ; b += 1 ; c += 1
+        """)
+    expected_formatted_code = textwrap.dedent("""\
+        a = line_to_format
+
+
+        def f():
+           x = y + 42; z = n * 42
+           if True: a += 1 ; b += 1 ; c += 1
+        """)
+    self.assertYapfReformats(
+        unformatted_code,
+        expected_formatted_code,
+        extra_options=['--lines', '1-1'])
+
   def testDisabledMultilineStrings(self):
     unformatted_code = textwrap.dedent('''\
         foo=42
